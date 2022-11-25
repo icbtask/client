@@ -74,7 +74,25 @@ async fn main() {
                 ("delete", args) => {
                     let task_id = args.get_one::<String>("id").unwrap();
                     task::delete_task(task_id).await.unwrap();
-                    println!("Task  deleted");
+                    println!("Task deleted");
+                }
+                ("complete", args) => {
+                    let task_id = args.get_one::<String>("id").unwrap();
+                    task::complete_task(task_id).await.unwrap();
+                    println!("Task completed");
+                }
+                ("edit", args) => {
+                    let task_id = args.get_one::<String>("id").unwrap();
+                    let project = args.get_one::<String>("project");
+                    let description = args.get_one::<String>("description");
+                    task::edit_task(task_id, project, description).await.unwrap();
+                    println!("Task edited");
+                }
+                ("share", args) => {
+                    let task_id = args.get_one::<String>("id").unwrap();
+                    let address = args.get_one::<String>("address").unwrap();
+                    task::share_task(task_id, address).await.unwrap();
+                    println!("Task shared");
                 }
                 (name, _) => {
                     unreachable!("Unknown command {}", name)
