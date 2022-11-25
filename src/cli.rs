@@ -45,7 +45,7 @@ pub fn cli() -> Command {
                                 .require_equals(true),
                         ),
                 )
-                .subcommand(Command::new("show").about("Show all tasks"))
+                .subcommand(Command::new("list").about("List all tasks"))
                 .subcommand(
                     Command::new("delete")
                         .about("Delete a task")
