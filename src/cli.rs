@@ -54,11 +54,7 @@ pub fn cli() -> Command {
                 .subcommand(
                     Command::new("complete")
                         .about("Set a task as complete")
-                        .arg(
-                            arg!(--task_id <task_id>)
-                                .required(true)
-                                .require_equals(true),
-                        ),
+                        .arg(arg!(--id <task_id>).required(true).require_equals(true)),
                 )
                 .subcommand(
                     Command::new("edit")
@@ -70,11 +66,7 @@ pub fn cli() -> Command {
                 .subcommand(
                     Command::new("share")
                         .about("Share a task")
-                        .arg(
-                            arg!(--task_id <task_id>)
-                                .required(true)
-                                .require_equals(true),
-                        )
+                        .arg(arg!(--id <task_id>).required(true).require_equals(true))
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
