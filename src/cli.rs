@@ -87,7 +87,7 @@ pub fn cli() -> Command {
                 .about("Manage addresses")
                 .subcommand_required(true)
                 .subcommand(Command::new("add").about("Add new address"))
-                .subcommand(Command::new("show").about("Show all addresses"))
+                .subcommand(Command::new("list").about("List all addresses"))
                 .subcommand(
                     Command::new("delete").about("Delete an address").arg(
                         arg!(--address <address>)
