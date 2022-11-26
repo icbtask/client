@@ -1,10 +1,10 @@
 #[path = "config.rs"]
 mod config;
 
-use std::process::exit;
-use serde::Deserialize;
 use reqwest::header::HeaderMap;
 use reqwest::Response;
+use serde::Deserialize;
+use std::process::exit;
 
 #[derive(Deserialize)]
 pub struct AllowedAddress {
@@ -13,7 +13,7 @@ pub struct AllowedAddress {
 }
 
 #[derive(Deserialize)]
-pub struct Address{
+pub struct Address {
     pub address: String,
     pub allowed_addresses: Vec<AllowedAddress>,
     pub todolist_id: Option<String>,
@@ -21,11 +21,10 @@ pub struct Address{
 
 #[derive(Deserialize, Debug)]
 struct ErrorResponse {
-    error: String
+    error: String,
 }
 
-
-async fn display_response_error(response: Response)  -> Result<(), reqwest::Error>{
+async fn display_response_error(response: Response) -> Result<(), reqwest::Error> {
     println!("{}", response.json::<ErrorResponse>().await?.error);
     exit(1);
 }
@@ -48,7 +47,13 @@ pub async fn get_addresses() -> Result<Vec<Address>, Box<dyn std::error::Error>>
             .unwrap(),
     );
 
-    let addresses : Vec<Address>= client.get(url).headers(headers).send().await?.json().await?;
+    let addresses: Vec<Address> = client
+        .get(url)
+        .headers(headers)
+        .send()
+        .await?
+        .json()
+        .await?;
 
     Ok(addresses)
 }
@@ -57,7 +62,9 @@ pub async fn create_address() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let url = format!(
         "{}/address",
-        envy::from_env::<config::Config>().expect("`BASE_URL` is required").base_url
+        envy::from_env::<config::Config>()
+            .expect("`BASE_URL` is required")
+            .base_url
     );
     let mut headers = HeaderMap::new();
     headers.insert(
@@ -70,13 +77,13 @@ pub async fn create_address() -> Result<(), Box<dyn std::error::Error>> {
     );
     let response = client.post(url).headers(headers).send().await?;
 
-    if ! response.status().is_success() {
+    if !response.status().is_success() {
         display_response_error(response).await?;
     }
     Ok(())
 }
 
-pub async fn delete_address(address : &str) -> Result<(), Box<dyn std::error::Error>> {
+pub async fn delete_address(address: &str) -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let url = format!(
         "{}/address/{}",
@@ -102,7 +109,10 @@ pub async fn delete_address(address : &str) -> Result<(), Box<dyn std::error::Er
     Ok(())
 }
 
-pub async fn attach_address(address : &str, todolist_id: &str) -> Result<(), Box<dyn std::error::Error>> {
+pub async fn attach_address(
+    address: &str,
+    todolist_id: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let url = format!(
         "{}/address/todolist/{}/{}",
@@ -129,7 +139,7 @@ pub async fn attach_address(address : &str, todolist_id: &str) -> Result<(), Box
     Ok(())
 }
 
-pub async fn detach_address(address : &str) -> Result<(), Box<dyn std::error::Error>> {
+pub async fn detach_address(address: &str) -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let url = format!(
         "{}/address/todolist/{}",
@@ -155,8 +165,10 @@ pub async fn detach_address(address : &str) -> Result<(), Box<dyn std::error::Er
     Ok(())
 }
 
-
-pub async fn allow_address(address : &str, remote_address: &str) -> Result<(), Box<dyn std::error::Error>> {
+pub async fn allow_address(
+    address: &str,
+    remote_address: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let url = format!(
         "{}/address/access/{}/{}",
@@ -183,7 +195,10 @@ pub async fn allow_address(address : &str, remote_address: &str) -> Result<(), B
     Ok(())
 }
 
-pub async fn revoke_address(address : &str, remote_address: &str) -> Result<(), Box<dyn std::error::Error>> {
+pub async fn revoke_address(
+    address: &str,
+    remote_address: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let url = format!(
         "{}/address/access/{}/{}",
