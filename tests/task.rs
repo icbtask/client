@@ -106,3 +106,65 @@ fn delete_task() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+
+#[test]
+fn complete_task() -> Result<(), Box<dyn std::error::Error>> {
+    let url = &mockito::server_url();
+    let _m = mock("PATCH", "/task/11b67ff3-b08f-47c7-b77c-658e4567a58d")
+        .with_status(204)
+        .with_header("content-type", "application/json")
+        .create();
+
+    let cmd = Command::cargo_bin("icbtask")?
+        .env("API_KEY", "SECRETKEY")
+        .env("BASE_URL", url)
+        .arg("task")
+        .arg("complete")
+        .arg("--id=11b67ff3-b08f-47c7-b77c-658e4567a58d")
+        .output()
+        .unwrap();
+
+    assert!(cmd.status.success());
+
+    let output = String::from_utf8(cmd.stdout)?;
+
+    let expected = "Task completed\n";
+
+    assert_eq!(output, expected);
+
+    Ok(())
+}
+
+#[test]
+fn share_task() -> Result<(), Box<dyn std::error::Error>> {
+    let url = &mockito::server_url();
+    let _m = mock(
+        "POST",
+        "/task/share/11b67ff3-b08f-47c7-b77c-658e4567a58d/afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca"
+    )
+    .with_status(204)
+    .with_header("content-type", "application/json")
+    .create();
+
+    let cmd = Command::cargo_bin("icbtask")?
+        .env("API_KEY", "SECRETKEY")
+        .env("BASE_URL", url)
+        .arg("task")
+        .arg("share")
+        .arg("--id=11b67ff3-b08f-47c7-b77c-658e4567a58d")
+        .arg("--address=afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca")
+        .output()
+        .unwrap();
+
+    let output = String::from_utf8(cmd.stderr)?;
+    println!("XXXERROR: {}", output);
+    assert!(cmd.status.success());
+
+    let output = String::from_utf8(cmd.stdout)?;
+
+    let expected = "Task shared\n";
+
+    assert_eq!(output, expected);
+
+    Ok(())
+}
