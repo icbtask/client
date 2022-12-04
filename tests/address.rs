@@ -102,3 +102,130 @@ fn delete_address() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+
+#[test]
+fn attach_address() -> Result<(), Box<dyn std::error::Error>> {
+    let url = &mockito::server_url();
+    let _m = mock(
+        "POST",
+        "/address/todolist/afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca/11b67ff3-b08f-47c7-b77c-658e4567a58d",
+    )
+    .with_status(204)
+    .with_header("content-type", "application/json")
+    .create();
+
+    let cmd = Command::cargo_bin("icbtask")?
+        .env("API_KEY", "SECRETKEY")
+        .env("BASE_URL", url)
+        .arg("address")
+        .arg("attach")
+        .arg("--todolist_id=11b67ff3-b08f-47c7-b77c-658e4567a58d")
+        .arg("--address=afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca")
+        .output()
+        .unwrap();
+
+    assert!(cmd.status.success());
+
+    let output = String::from_utf8(cmd.stdout)?;
+
+    let expected = "Address attached successfuly\n";
+
+    assert_eq!(output, expected);
+
+    Ok(())
+}
+
+#[test]
+fn detach_address() -> Result<(), Box<dyn std::error::Error>> {
+    let url = &mockito::server_url();
+    let _m = mock(
+        "DELETE",
+        "/address/todolist/afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca",
+    )
+    .with_status(204)
+    .with_header("content-type", "application/json")
+    .create();
+
+    let cmd = Command::cargo_bin("icbtask")?
+        .env("API_KEY", "SECRETKEY")
+        .env("BASE_URL", url)
+        .arg("address")
+        .arg("detach")
+        .arg("--address=afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca")
+        .output()
+        .unwrap();
+
+    assert!(cmd.status.success());
+
+    let output = String::from_utf8(cmd.stdout)?;
+
+    let expected = "Address detached successfuly\n";
+
+    assert_eq!(output, expected);
+
+    Ok(())
+}
+
+#[test]
+fn allow_address() -> Result<(), Box<dyn std::error::Error>> {
+    let url = &mockito::server_url();
+    let _m = mock(
+        "POST",
+        "/address/access/afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca/qaq7l7f6uutpqohbhqjqlr7jwnhmbrm43nj4p2pbg2qzsfs5rkua"
+    )
+    .with_status(204)
+    .with_header("content-type", "application/json")
+    .create();
+
+    let cmd = Command::cargo_bin("icbtask")?
+        .env("API_KEY", "SECRETKEY")
+        .env("BASE_URL", url)
+        .arg("address")
+        .arg("allow")
+        .arg("--address=afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca")
+        .arg("--remote_address=qaq7l7f6uutpqohbhqjqlr7jwnhmbrm43nj4p2pbg2qzsfs5rkua")
+        .output()
+        .unwrap();
+
+    assert!(cmd.status.success());
+
+    let output = String::from_utf8(cmd.stdout)?;
+
+    let expected = "Remote address allowed\n";
+
+    assert_eq!(output, expected);
+
+    Ok(())
+}
+
+#[test]
+fn revoke_address() -> Result<(), Box<dyn std::error::Error>> {
+    let url = &mockito::server_url();
+    let _m = mock(
+        "DELETE",
+        "/address/access/afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca/qaq7l7f6uutpqohbhqjqlr7jwnhmbrm43nj4p2pbg2qzsfs5rkua"
+    )
+    .with_status(204)
+    .with_header("content-type", "application/json")
+    .create();
+
+    let cmd = Command::cargo_bin("icbtask")?
+        .env("API_KEY", "SECRETKEY")
+        .env("BASE_URL", url)
+        .arg("address")
+        .arg("revoke")
+        .arg("--address=afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca")
+        .arg("--remote_address=qaq7l7f6uutpqohbhqjqlr7jwnhmbrm43nj4p2pbg2qzsfs5rkua")
+        .output()
+        .unwrap();
+
+    assert!(cmd.status.success());
+
+    let output = String::from_utf8(cmd.stdout)?;
+
+    let expected = "Remote address revoked\n";
+
+    assert_eq!(output, expected);
+
+    Ok(())
+}
