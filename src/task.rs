@@ -184,8 +184,10 @@ pub async fn edit_task(
 pub async fn share_task(task_id: &str, address: &str) -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let url = format!(
-        "{}/task/share",
+        "{}/task/share/{}/{}",
         envy::from_env::<config::Config>().unwrap().base_url,
+        task_id,
+        address,
     );
     let mut headers = HeaderMap::new();
     headers.insert(
@@ -196,11 +198,8 @@ pub async fn share_task(task_id: &str, address: &str) -> Result<(), Box<dyn std:
             .parse()
             .unwrap(),
     );
-    let mut json = HashMap::new();
-    json.insert("task_id", task_id);
-    json.insert("destination_address", address);
 
-    let response = client.post(url).headers(headers).json(&json).send().await?;
+    let response = client.post(url).headers(headers).send().await?;
 
     if !response.status().is_success() {
         display_response_error(response).await?;
