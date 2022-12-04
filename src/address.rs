@@ -156,7 +156,7 @@ pub async fn detach_address(address: &str) -> Result<(), Box<dyn std::error::Err
             .unwrap(),
     );
 
-    let response = client.post(url).headers(headers).send().await?;
+    let response = client.delete(url).headers(headers).send().await?;
 
     if !response.status().is_success() {
         display_response_error(response).await?;
