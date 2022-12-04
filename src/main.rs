@@ -159,7 +159,7 @@ async fn main() {
                     address::allow_address(address, remote_address)
                         .await
                         .unwrap();
-                    println!("Address detached successfuly");
+                    println!("Remote address allowed");
                 }
                 ("revoke", args) => {
                     let address = args.get_one::<String>("address").unwrap();
@@ -167,7 +167,7 @@ async fn main() {
                     address::revoke_address(address, remote_address)
                         .await
                         .unwrap();
-                    println!("Address detached successfuly");
+                    println!("Remote address revoked");
                 }
                 (name, _) => {
                     unreachable!("Unknown command {}", name)
