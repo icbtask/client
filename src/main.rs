@@ -109,6 +109,12 @@ async fn main() {
                     task::share_task(task_id, address).await.unwrap();
                     println!("Task shared");
                 }
+                ("unshare", args) => {
+                    let task_id = args.get_one::<String>("id").unwrap();
+                    let address = args.get_one::<String>("address").unwrap();
+                    task::unshare_task(task_id, address).await.unwrap();
+                    println!("Task unshared");
+                }
                 (name, _) => {
                     unreachable!("Unknown command {}", name)
                 }

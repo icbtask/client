@@ -72,6 +72,16 @@ pub fn cli() -> Command {
                                 .required(true)
                                 .require_equals(true),
                         ),
+                )
+                .subcommand(
+                    Command::new("unshare")
+                        .about("Unshare a task")
+                        .arg(arg!(--id <task_id>).required(true).require_equals(true))
+                        .arg(
+                            arg!(--address <address>)
+                                .required(true)
+                                .require_equals(true),
+                        ),
                 ),
         )
         .subcommand(
