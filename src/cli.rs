@@ -1,4 +1,4 @@
-use clap::{arg, Command};
+use clap::{arg, builder, Command};
 
 pub fn cli() -> Command {
     Command::new("icbtask")
@@ -12,13 +12,17 @@ pub fn cli() -> Command {
                         arg!(--name <name>)
                             .short('n')
                             .required(true)
-                            .require_equals(true),
+                            .require_equals(true)
+                            .value_parser(builder::NonEmptyStringValueParser::new()),
                     ),
                 )
                 .subcommand(
-                    Command::new("delete")
-                        .about("Delete a todolist")
-                        .arg(arg!(--id <todolist_id>).required(true).require_equals(true)),
+                    Command::new("delete").about("Delete a todolist").arg(
+                        arg!(--id <todolist_id>)
+                            .required(true)
+                            .require_equals(true)
+                            .value_parser(builder::NonEmptyStringValueParser::new()),
+                    ),
                 )
                 .subcommand(Command::new("list").about("List all todolists")),
         )
@@ -32,29 +36,40 @@ pub fn cli() -> Command {
                         .arg(
                             arg!(--todolist_id <todolist_id>)
                                 .required(true)
-                                .require_equals(true),
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
                         )
                         .arg(
                             arg!(--project <project>)
                                 .required(true)
-                                .require_equals(true),
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
                         )
                         .arg(
                             arg!(--description <description>)
                                 .required(true)
-                                .require_equals(true),
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 )
                 .subcommand(Command::new("list").about("List all tasks"))
                 .subcommand(
-                    Command::new("delete")
-                        .about("Delete a task")
-                        .arg(arg!(--id <task_id>).required(true).require_equals(true)),
+                    Command::new("delete").about("Delete a task").arg(
+                        arg!(--id <task_id>)
+                            .required(true)
+                            .require_equals(true)
+                            .value_parser(builder::NonEmptyStringValueParser::new()),
+                    ),
                 )
                 .subcommand(
                     Command::new("complete")
                         .about("Set a task as complete")
-                        .arg(arg!(--id <task_id>).required(true).require_equals(true)),
+                        .arg(
+                            arg!(--id <task_id>)
+                                .required(true)
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
+                        ),
                 )
                 .subcommand(
                     Command::new("edit")
@@ -70,7 +85,8 @@ pub fn cli() -> Command {
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
-                                .require_equals(true),
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 )
                 .subcommand(
@@ -80,7 +96,8 @@ pub fn cli() -> Command {
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
-                                .require_equals(true),
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 ),
         )
@@ -94,7 +111,8 @@ pub fn cli() -> Command {
                     Command::new("delete").about("Delete an address").arg(
                         arg!(--address <address>)
                             .required(true)
-                            .require_equals(true),
+                            .require_equals(true)
+                            .value_parser(builder::NonEmptyStringValueParser::new()),
                     ),
                 )
                 .subcommand(
@@ -103,12 +121,14 @@ pub fn cli() -> Command {
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
-                                .require_equals(true),
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
                         )
                         .arg(
                             arg!(--todolist_id <todolist_id>)
                                 .required(true)
-                                .require_equals(true),
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 )
                 .subcommand(
@@ -117,7 +137,8 @@ pub fn cli() -> Command {
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
-                                .require_equals(true),
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 )
                 .subcommand(
@@ -126,12 +147,14 @@ pub fn cli() -> Command {
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
-                                .require_equals(true),
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
                         )
                         .arg(
                             arg!(--remote_address <remote_address>)
                                 .required(true)
-                                .require_equals(true),
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 )
                 .subcommand(
@@ -140,12 +163,14 @@ pub fn cli() -> Command {
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
-                                .require_equals(true),
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
                         )
                         .arg(
                             arg!(--remote_address <remote_address>)
                                 .required(true)
-                                .require_equals(true),
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 ),
         )
