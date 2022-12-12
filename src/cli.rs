@@ -7,22 +7,31 @@ pub fn cli() -> Command {
             Command::new("todolist")
                 .about("Manage todolists")
                 .subcommand_required(true)
+                .arg_required_else_help(true)
                 .subcommand(
-                    Command::new("add").about("Add new todolist").arg(
-                        arg!(--name <name>)
-                            .short('n')
-                            .required(true)
-                            .require_equals(true)
-                            .value_parser(builder::NonEmptyStringValueParser::new()),
-                    ),
+                    Command::new("add")
+                        .about("Add new todolist")
+                        .arg(
+                            arg!(--name <name>)
+                                .short('n')
+                                .required(true)
+                                .help("todolist name (Required)")
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
+                        )
+                        .arg_required_else_help(true),
                 )
                 .subcommand(
-                    Command::new("delete").about("Delete a todolist").arg(
-                        arg!(--id <todolist_id>)
-                            .required(true)
-                            .require_equals(true)
-                            .value_parser(builder::NonEmptyStringValueParser::new()),
-                    ),
+                    Command::new("delete")
+                        .about("Delete a todolist")
+                        .arg(
+                            arg!(--id <todolist_id>)
+                                .required(true)
+                                .require_equals(true)
+                                .help("todolist id (Required)")
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
+                        )
+                        .arg_required_else_help(true),
                 )
                 .subcommand(Command::new("list").about("List all todolists")),
         )
@@ -30,12 +39,15 @@ pub fn cli() -> Command {
             Command::new("task")
                 .about("Manage tasks")
                 .subcommand_required(true)
+                .arg_required_else_help(true)
                 .subcommand(
                     Command::new("add")
                         .about("Add new task")
+                        .arg_required_else_help(true)
                         .arg(
                             arg!(--todolist_id <todolist_id>)
                                 .required(true)
+                                .help("todolist id (Required)")
                                 .require_equals(true)
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
                         )
@@ -43,37 +55,46 @@ pub fn cli() -> Command {
                             arg!(--project <project>)
                                 .required(true)
                                 .require_equals(true)
+                                .help("project name (Required)")
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
                         )
                         .arg(
                             arg!(--description <description>)
                                 .required(true)
                                 .require_equals(true)
+                                .help("Task description (Required)")
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 )
                 .subcommand(Command::new("list").about("List all tasks"))
                 .subcommand(
-                    Command::new("delete").about("Delete a task").arg(
-                        arg!(--id <task_id>)
-                            .required(true)
-                            .require_equals(true)
-                            .value_parser(builder::NonEmptyStringValueParser::new()),
-                    ),
+                    Command::new("delete")
+                        .about("Delete a task")
+                        .arg_required_else_help(true)
+                        .arg(
+                            arg!(--id <task_id>)
+                                .required(true)
+                                .help("task id (Required)")
+                                .require_equals(true)
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
+                        ),
                 )
                 .subcommand(
                     Command::new("complete")
                         .about("Set a task as complete")
+                        .arg_required_else_help(true)
                         .arg(
                             arg!(--id <task_id>)
                                 .required(true)
                                 .require_equals(true)
+                                .help("task id (Required)")
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 )
                 .subcommand(
                     Command::new("edit")
                         .about("Edit a task")
+                        .arg_required_else_help(true)
                         .arg(arg!(--id <task_id>).required(true).require_equals(true))
                         .arg(arg!(--project <project>).require_equals(true))
                         .arg(arg!(--description <description>).require_equals(true)),
@@ -81,22 +102,26 @@ pub fn cli() -> Command {
                 .subcommand(
                     Command::new("share")
                         .about("Share a task")
+                        .arg_required_else_help(true)
                         .arg(arg!(--id <task_id>).required(true).require_equals(true))
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
                                 .require_equals(true)
+                                .help("remote address (Required)")
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 )
                 .subcommand(
                     Command::new("unshare")
                         .about("Unshare a task")
+                        .arg_required_else_help(true)
                         .arg(arg!(--id <task_id>).required(true).require_equals(true))
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
                                 .require_equals(true)
+                                .help("remote address (Required)")
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 ),
@@ -104,74 +129,91 @@ pub fn cli() -> Command {
         .subcommand(
             Command::new("address")
                 .about("Manage addresses")
+                .arg_required_else_help(true)
                 .subcommand_required(true)
                 .subcommand(Command::new("add").about("Add new address"))
                 .subcommand(Command::new("list").about("List all addresses"))
                 .subcommand(
-                    Command::new("delete").about("Delete an address").arg(
-                        arg!(--address <address>)
-                            .required(true)
-                            .require_equals(true)
-                            .value_parser(builder::NonEmptyStringValueParser::new()),
-                    ),
-                )
-                .subcommand(
-                    Command::new("attach")
-                        .about("Attach an address to a todolist")
+                    Command::new("delete")
+                        .about("Delete an address")
+                        .arg_required_else_help(true)
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
                                 .require_equals(true)
+                                .help("user address (Required)")
+                                .value_parser(builder::NonEmptyStringValueParser::new()),
+                        ),
+                )
+                .subcommand(
+                    Command::new("attach")
+                        .about("Attach an address to a todolist")
+                        .arg_required_else_help(true)
+                        .arg(
+                            arg!(--address <address>)
+                                .required(true)
+                                .require_equals(true)
+                                .help("user address (Required)")
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
                         )
                         .arg(
                             arg!(--todolist_id <todolist_id>)
                                 .required(true)
                                 .require_equals(true)
+                                .help("todolist id (Required)")
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 )
                 .subcommand(
                     Command::new("detach")
                         .about("Detach an address from a todolist")
+                        .arg_required_else_help(true)
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
                                 .require_equals(true)
+                                .help("user address (Required)")
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 )
                 .subcommand(
                     Command::new("allow")
                         .about("Allow an address")
+                        .arg_required_else_help(true)
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
                                 .require_equals(true)
+                                .help("user address (Required)")
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
                         )
                         .arg(
                             arg!(--remote_address <remote_address>)
                                 .required(true)
                                 .require_equals(true)
+                                .help("remote address (Required)")
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 )
                 .subcommand(
                     Command::new("revoke")
                         .about("Revoke an address")
+                        .arg_required_else_help(true)
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
                                 .require_equals(true)
+                                .help("user address (Required)")
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
                         )
                         .arg(
                             arg!(--remote_address <remote_address>)
                                 .required(true)
                                 .require_equals(true)
+                                .help("remote address (Required)")
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
-                        ),
+                        )
+                        .arg_required_else_help(true),
                 ),
         )
 }
