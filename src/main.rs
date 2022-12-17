@@ -1,5 +1,6 @@
 mod address;
 mod cli;
+mod config;
 mod task;
 mod todolist;
 

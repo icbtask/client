@@ -1,5 +1,4 @@
-#[path = "config.rs"]
-mod config;
+use crate::config;
 
 use reqwest::header::HeaderMap;
 use reqwest::Response;
