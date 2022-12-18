@@ -12,4 +12,4 @@ build:
     @cargo build
 
 update:
-    @cargo update
+    @cargo upgrade
