@@ -6,7 +6,7 @@ use serde::Deserialize;
 use std::collections::HashMap;
 use std::process::exit;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct Todolist {
     pub name: String,
     pub todolist_id: String,
