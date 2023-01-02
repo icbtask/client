@@ -66,7 +66,23 @@ pub fn cli() -> Command {
                                 .value_parser(builder::NonEmptyStringValueParser::new()),
                         ),
                 )
-                .subcommand(Command::new("list").about("List all tasks"))
+                .subcommand(
+                    Command::new("list")
+                        .about("List all tasks")
+                        .arg(
+                            arg!(--show_complete)
+                                .long("show-complete")
+                                .help("Show completed tasks as well (Optional)")
+                                .action(builder::ArgAction::SetTrue)
+                                .required(false),
+                        )
+                        .arg(
+                            arg!(--todolist_id <todolist_id>)
+                                .long("todolist-id")
+                                .required(false)
+                                .help("Show only tasks from this todolist (Optional)"),
+                        ),
+                )
                 .subcommand(
                     Command::new("delete")
                         .about("Delete a task")

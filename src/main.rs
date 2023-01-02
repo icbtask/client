@@ -3,21 +3,13 @@ mod cli;
 mod config;
 mod task;
 mod todolist;
-
-use tabled::{Table, Tabled};
+use std::collections::HashMap;
+use tabled::{builder::Builder, Alignment, Panel, Table, Tabled};
 
 #[derive(Tabled)]
 struct Todolist {
     id: String,
     name: String,
-}
-
-#[derive(Tabled)]
-struct Task {
-    id: String,
-    status: String,
-    project: String,
-    description: String,
 }
 
 #[derive(Tabled)]
@@ -72,18 +64,46 @@ async fn main() {
                         .unwrap();
                     println!("New task created");
                 }
-                ("list", _) => {
-                    let tasks = task::get_tasks().await.unwrap();
-                    let data: Vec<Task> = tasks
-                        .into_iter()
-                        .map(|x| Task {
-                            id: x.task_id,
-                            status: x.status,
-                            project: x.project,
-                            description: x.description,
-                        })
-                        .collect();
-                    println!("{}", Table::new(data));
+                ("list", args) => {
+                    let todolist_id = args.get_one::<String>("todolist_id");
+                    let tasks = task::get_tasks(todolist_id).await.unwrap();
+                    let show_complete = args.get_one::<bool>("show_complete").unwrap();
+
+                    let mut tables: HashMap<String, Builder> = HashMap::new();
+                    let mut columns = vec![
+                        "id".to_string(),
+                        "project".to_string(),
+                        "description".to_string(),
+                    ];
+
+                    if *show_complete {
+                        columns.push("status".to_string());
+                    }
+
+                    for t in tasks {
+                        let todolist_name = t.todolist.name;
+
+                        let mut row = vec![t.task_id, t.project, t.description];
+
+                        if *show_complete {
+                            row.push(t.status);
+                        }
+
+                        if let Some(table) = tables.get_mut(&todolist_name) {
+                            table.add_record(row);
+                        } else {
+                            let mut table = Builder::default();
+                            table.add_record(row);
+                            tables.insert(todolist_name, table);
+                        }
+                    }
+
+                    for (todolist, mut table) in tables.into_iter() {
+                        table.set_columns(&columns);
+                        let mut data = table.build();
+                        data.with(Panel::header(todolist)).with(Alignment::center());
+                        println!("{}", data);
+                    }
                 }
                 ("delete", args) => {
                     let task_id = args.get_one::<String>("id").unwrap();
