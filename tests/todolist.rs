@@ -42,7 +42,7 @@ fn list_todolist() -> Result<(), Box<dyn std::error::Error>> {
         {
             "created_at": "2022-01-03T10:00:00",
             "name": "My Todolist",
-            "todolist_id": "11b67ff3-b08f-47c7-b77c-658e4567a58d"
+            "todolist_id": "11b67ff3"
         }
     ]
             "#,
@@ -61,11 +61,11 @@ fn list_todolist() -> Result<(), Box<dyn std::error::Error>> {
     let output = String::from_utf8(cmd.stdout)?;
 
     let expected = "\
-+--------------------------------------+-------------+
-| id                                   | name        |
-+--------------------------------------+-------------+
-| 11b67ff3-b08f-47c7-b77c-658e4567a58d | My Todolist |
-+--------------------------------------+-------------+
++----------+-------------+
+| id       | name        |
++----------+-------------+
+| 11b67ff3 | My Todolist |
++----------+-------------+
 ";
 
     assert_eq!(output, expected);
@@ -76,7 +76,7 @@ fn list_todolist() -> Result<(), Box<dyn std::error::Error>> {
 #[test]
 fn delete_todolist() -> Result<(), Box<dyn std::error::Error>> {
     let url = &mockito::server_url();
-    let _m = mock("DELETE", "/todolist/11b67ff3-b08f-47c7-b77c-658e4567a58d")
+    let _m = mock("DELETE", "/todolist/11b67ff3")
         .with_status(204)
         .with_header("content-type", "application/json")
         .create();
@@ -86,7 +86,7 @@ fn delete_todolist() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("todolist")
         .arg("delete")
-        .arg("--id=11b67ff3-b08f-47c7-b77c-658e4567a58d")
+        .arg("--id=11b67ff3")
         .output()
         .unwrap();
 

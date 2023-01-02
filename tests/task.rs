@@ -15,7 +15,7 @@ fn create_task() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("task")
         .arg("add")
-        .arg("--todolist_id=11b67ff3-b08f-47c7-b77c-658e4567a58d")
+        .arg("--todolist_id=11b67ff3")
         .arg("--project=Tools")
         .arg("--description=Build new todolist tool")
         .output()
@@ -45,9 +45,15 @@ fn list_tasks() -> Result<(), Box<dyn std::error::Error>> {
             "created_at": "2022-01-03T10:00:00",
             "description": "Build new todolist tool",
             "project": "Tools",
+            "shared_from": [],
+            "shared_with": [],
             "status": "created",
-            "task_id": "12345678-0000-0000-0000-03cd82fef676",
-            "todolist_id": "99999999-0000-0000-PUBL-BADRTODOLIST",
+            "task_id": "12345678",
+            "todolist": {
+                "created_at": "2022-01-03T10:00:00",
+                "todolist_id": "99999999",
+                "name": "My Todolist"
+            },
             "updated_at": "2022-01-03T10:00:00"
         }
     ]
@@ -68,11 +74,13 @@ fn list_tasks() -> Result<(), Box<dyn std::error::Error>> {
     let output = String::from_utf8(cmd.stdout)?;
 
     let expected = "\
-+--------------------------------------+---------+---------+-------------------------+
-| id                                   | status  | project | description             |
-+--------------------------------------+---------+---------+-------------------------+
-| 12345678-0000-0000-0000-03cd82fef676 | created | Tools   | Build new todolist tool |
-+--------------------------------------+---------+---------+-------------------------+
++----------+---------+-------------------------+
+|                 My Todolist                  |
++----------+---------+-------------------------+
+|    id    | project |       description       |
++----------+---------+-------------------------+
+| 12345678 |  Tools  | Build new todolist tool |
++----------+---------+-------------------------+
 ";
     assert_eq!(output, expected);
 
@@ -82,7 +90,7 @@ fn list_tasks() -> Result<(), Box<dyn std::error::Error>> {
 #[test]
 fn delete_task() -> Result<(), Box<dyn std::error::Error>> {
     let url = &mockito::server_url();
-    let _m = mock("DELETE", "/task/11b67ff3-b08f-47c7-b77c-658e4567a58d")
+    let _m = mock("DELETE", "/task/11b67ff3")
         .with_status(204)
         .with_header("content-type", "application/json")
         .create();
@@ -92,7 +100,7 @@ fn delete_task() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("task")
         .arg("delete")
-        .arg("--id=11b67ff3-b08f-47c7-b77c-658e4567a58d")
+        .arg("--id=11b67ff3")
         .output()
         .unwrap();
 
@@ -110,7 +118,7 @@ fn delete_task() -> Result<(), Box<dyn std::error::Error>> {
 #[test]
 fn complete_task() -> Result<(), Box<dyn std::error::Error>> {
     let url = &mockito::server_url();
-    let _m = mock("PATCH", "/task/11b67ff3-b08f-47c7-b77c-658e4567a58d")
+    let _m = mock("PATCH", "/task/11b67ff3")
         .with_status(204)
         .with_header("content-type", "application/json")
         .create();
@@ -120,7 +128,7 @@ fn complete_task() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("task")
         .arg("complete")
-        .arg("--id=11b67ff3-b08f-47c7-b77c-658e4567a58d")
+        .arg("--id=11b67ff3")
         .output()
         .unwrap();
 
@@ -140,7 +148,7 @@ fn share_task() -> Result<(), Box<dyn std::error::Error>> {
     let url = &mockito::server_url();
     let _m = mock(
         "POST",
-        "/task/share/11b67ff3-b08f-47c7-b77c-658e4567a58d/afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca"
+        "/task/share/11b67ff3/afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca",
     )
     .with_status(204)
     .with_header("content-type", "application/json")
@@ -151,7 +159,7 @@ fn share_task() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("task")
         .arg("share")
-        .arg("--id=11b67ff3-b08f-47c7-b77c-658e4567a58d")
+        .arg("--id=11b67ff3")
         .arg("--address=afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca")
         .output()
         .unwrap();
@@ -172,7 +180,7 @@ fn unshare_task() -> Result<(), Box<dyn std::error::Error>> {
     let url = &mockito::server_url();
     let _m = mock(
         "DELETE",
-        "/task/share/11b67ff3-b08f-47c7-b77c-658e4567a58d/afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca"
+        "/task/share/11b67ff3/afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca",
     )
     .with_status(204)
     .with_header("content-type", "application/json")
@@ -183,7 +191,7 @@ fn unshare_task() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("task")
         .arg("unshare")
-        .arg("--id=11b67ff3-b08f-47c7-b77c-658e4567a58d")
+        .arg("--id=11b67ff3")
         .arg("--address=afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca")
         .output()
         .unwrap();

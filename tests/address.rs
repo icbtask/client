@@ -108,7 +108,7 @@ fn attach_address() -> Result<(), Box<dyn std::error::Error>> {
     let url = &mockito::server_url();
     let _m = mock(
         "POST",
-        "/address/todolist/afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca/11b67ff3-b08f-47c7-b77c-658e4567a58d",
+        "/address/todolist/afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca/11b67ff3",
     )
     .with_status(204)
     .with_header("content-type", "application/json")
@@ -119,7 +119,7 @@ fn attach_address() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("address")
         .arg("attach")
-        .arg("--todolist_id=11b67ff3-b08f-47c7-b77c-658e4567a58d")
+        .arg("--todolist_id=11b67ff3")
         .arg("--address=afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca")
         .output()
         .unwrap();
