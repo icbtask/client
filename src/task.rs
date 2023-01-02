@@ -1,4 +1,5 @@
 use crate::config;
+use crate::todolist::Todolist;
 
 use reqwest::header::HeaderMap;
 use serde::Deserialize;
@@ -12,7 +13,7 @@ pub struct Task {
     pub description: String,
     pub project: String,
     pub status: String,
-    pub todolist_id: String,
+    pub todolist: Todolist,
     pub task_id: String,
     pub updated_at: String,
 }
@@ -58,7 +59,9 @@ pub async fn create_task(
     Ok(())
 }
 
-pub async fn get_tasks() -> Result<Vec<Task>, Box<dyn std::error::Error>> {
+pub async fn get_tasks(
+    todolist_id: Option<&String>,
+) -> Result<Vec<Task>, Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let url = format!(
         "{}/tasks",
@@ -73,15 +76,30 @@ pub async fn get_tasks() -> Result<Vec<Task>, Box<dyn std::error::Error>> {
             .parse()
             .unwrap(),
     );
-    let tasks: Vec<Task> = client
-        .get(url)
-        .headers(headers)
-        .send()
-        .await?
-        .json()
-        .await?;
+    match todolist_id {
+        Some(id) => {
+            let tasks: Vec<Task> = client
+                .get(url)
+                .headers(headers)
+                .query(&[("todolist_id", id)])
+                .send()
+                .await?
+                .json()
+                .await?;
+            Ok(tasks)
+        }
+        None => {
+            let tasks: Vec<Task> = client
+                .get(url)
+                .headers(headers)
+                .send()
+                .await?
+                .json()
+                .await?;
 
-    Ok(tasks)
+            Ok(tasks)
+        }
+    }
 }
 
 pub async fn delete_task(task_id: &str) -> Result<(), Box<dyn std::error::Error>> {
