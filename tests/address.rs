@@ -40,7 +40,7 @@ fn list_addressess() -> Result<(), Box<dyn std::error::Error>> {
     [
         {
             "address": "afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca",
-            "todolist_id": null,
+            "todolist": null,
             "allowed_addresses": []
         }
     ]

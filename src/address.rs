@@ -1,21 +1,22 @@
 use crate::config;
+use crate::todolist;
 
 use reqwest::header::HeaderMap;
 use reqwest::Response;
 use serde::Deserialize;
 use std::process::exit;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct AllowedAddress {
     pub username: String,
     pub address: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct Address {
     pub address: String,
     pub allowed_addresses: Vec<AllowedAddress>,
-    pub todolist_id: Option<String>,
+    pub todolist: Option<todolist::Todolist>,
 }
 
 #[derive(Deserialize, Debug)]

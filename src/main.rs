@@ -154,7 +154,12 @@ async fn main() {
                         .into_iter()
                         .map(|x| Address {
                             address: x.address,
-                            todolist_id: x.todolist_id.unwrap_or_default(),
+                            todolist_id: {
+                                match x.todolist {
+                                    None => String::new(),
+                                    Some(t) => t.todolist_id,
+                                }
+                            },
                             allowed_addresses: x
                                 .allowed_addresses
                                 .into_iter()
