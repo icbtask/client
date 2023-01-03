@@ -3,6 +3,7 @@ mod cli;
 mod config;
 mod task;
 mod todolist;
+mod utils;
 use std::collections::HashMap;
 use tabled::{builder::Builder, Alignment, Panel, Table, Tabled};
 

@@ -1,11 +1,10 @@
 use crate::config;
 use crate::todolist::Todolist;
+use crate::utils;
 
 use reqwest::header::HeaderMap;
 use serde::Deserialize;
 use std::collections::HashMap;
-
-use std::process::exit;
 
 #[derive(Deserialize, Debug)]
 pub struct Task {
@@ -18,16 +17,6 @@ pub struct Task {
     pub todolist: Todolist,
     pub task_id: String,
     pub updated_at: String,
-}
-
-#[derive(Deserialize, Debug)]
-struct ErrorResponse {
-    description: String,
-}
-
-async fn display_response_error(response: reqwest::Response) -> Result<(), reqwest::Error> {
-    println!("{}", response.json::<ErrorResponse>().await?.description);
-    exit(1);
 }
 
 pub async fn create_task(
@@ -56,7 +45,7 @@ pub async fn create_task(
     let response = client.post(url).headers(headers).json(&json).send().await?;
 
     if !response.status().is_success() {
-        display_response_error(response).await?;
+        utils::display_response_error(response).await?;
     }
     Ok(())
 }
@@ -123,7 +112,7 @@ pub async fn delete_task(task_id: &str) -> Result<(), Box<dyn std::error::Error>
     let response = client.delete(url).headers(headers).send().await?;
 
     if !response.status().is_success() {
-        display_response_error(response).await?;
+        utils::display_response_error(response).await?;
     }
     Ok(())
 }
@@ -154,7 +143,7 @@ pub async fn complete_task(task_id: &str) -> Result<(), Box<dyn std::error::Erro
         .await?;
 
     if !response.status().is_success() {
-        display_response_error(response).await?;
+        utils::display_response_error(response).await?;
     }
     Ok(())
 }
@@ -195,7 +184,7 @@ pub async fn edit_task(
         .await?;
 
     if !response.status().is_success() {
-        display_response_error(response).await?;
+        utils::display_response_error(response).await?;
     }
     Ok(())
 }
@@ -221,7 +210,7 @@ pub async fn share_task(task_id: &str, address: &str) -> Result<(), Box<dyn std:
     let response = client.post(url).headers(headers).send().await?;
 
     if !response.status().is_success() {
-        display_response_error(response).await?;
+        utils::display_response_error(response).await?;
     }
     Ok(())
 }
@@ -247,7 +236,7 @@ pub async fn unshare_task(task_id: &str, address: &str) -> Result<(), Box<dyn st
     let response = client.delete(url).headers(headers).send().await?;
 
     if !response.status().is_success() {
-        display_response_error(response).await?;
+        utils::display_response_error(response).await?;
     }
     Ok(())
 }

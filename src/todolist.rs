@@ -1,25 +1,14 @@
 use crate::config;
+use crate::utils;
 
 use reqwest::header::HeaderMap;
-use reqwest::Response;
 use serde::Deserialize;
 use std::collections::HashMap;
-use std::process::exit;
 
 #[derive(Deserialize, Debug)]
 pub struct Todolist {
     pub name: String,
     pub todolist_id: String,
-}
-
-#[derive(Deserialize, Debug)]
-struct ErrorResponse {
-    description: String,
-}
-
-async fn display_response_error(response: Response) -> Result<(), reqwest::Error> {
-    println!("{}", response.json::<ErrorResponse>().await?.description);
-    exit(1);
 }
 
 pub async fn get_todolists() -> Result<Vec<Todolist>, Box<dyn std::error::Error>> {
@@ -73,7 +62,7 @@ pub async fn create_todolist(todolist_name: &str) -> Result<(), Box<dyn std::err
     let response = client.post(url).headers(headers).json(&json).send().await?;
 
     if !response.status().is_success() {
-        display_response_error(response).await?;
+        utils::display_response_error(response).await?;
     }
     Ok(())
 }
@@ -98,7 +87,7 @@ pub async fn delete_todolist(todolist_id: &str) -> Result<(), Box<dyn std::error
     let response = client.delete(url).headers(headers).send().await?;
 
     if !response.status().is_success() {
-        display_response_error(response).await?;
+        utils::display_response_error(response).await?;
     }
 
     Ok(())
