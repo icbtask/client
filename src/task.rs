@@ -12,6 +12,8 @@ pub struct Task {
     pub created_at: String,
     pub description: String,
     pub project: String,
+    pub shared_from: Option<String>,
+    pub shared_with: Vec<String>,
     pub status: String,
     pub todolist: Todolist,
     pub task_id: String,

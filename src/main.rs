@@ -74,6 +74,8 @@ async fn main() {
                         "id".to_string(),
                         "project".to_string(),
                         "description".to_string(),
+                        "shared from".to_string(),
+                        "shared with".to_string(),
                     ];
 
                     if *show_complete {
@@ -83,7 +85,19 @@ async fn main() {
                     for t in tasks {
                         let todolist_name = t.todolist.name;
 
-                        let mut row = vec![t.task_id, t.project, t.description];
+                        let mut row = vec![
+                            t.task_id,
+                            t.project,
+                            t.description,
+                            t.shared_from
+                                .map(|x| format!("@{}", x))
+                                .unwrap_or_else(String::new),
+                            t.shared_with
+                                .into_iter()
+                                .map(|v| format!("@{}", v))
+                                .collect::<Vec<String>>()
+                                .join(" "),
+                        ];
 
                         if *show_complete {
                             row.push(t.status);

@@ -45,7 +45,7 @@ fn list_tasks() -> Result<(), Box<dyn std::error::Error>> {
             "created_at": "2022-01-03T10:00:00",
             "description": "Build new todolist tool",
             "project": "Tools",
-            "shared_from": [],
+            "shared_from": null,
             "shared_with": [],
             "status": "created",
             "task_id": "12345678",
@@ -74,13 +74,13 @@ fn list_tasks() -> Result<(), Box<dyn std::error::Error>> {
     let output = String::from_utf8(cmd.stdout)?;
 
     let expected = "\
-+----------+---------+-------------------------+
-|                 My Todolist                  |
-+----------+---------+-------------------------+
-|    id    | project |       description       |
-+----------+---------+-------------------------+
-| 12345678 |  Tools  | Build new todolist tool |
-+----------+---------+-------------------------+
++----------+---------+-------------------------+-------------+-------------+
+|                               My Todolist                                |
++----------+---------+-------------------------+-------------+-------------+
+|    id    | project |       description       | shared from | shared with |
++----------+---------+-------------------------+-------------+-------------+
+| 12345678 |  Tools  | Build new todolist tool |             |             |
++----------+---------+-------------------------+-------------+-------------+
 ";
     assert_eq!(output, expected);
 
