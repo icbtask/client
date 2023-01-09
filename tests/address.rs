@@ -119,7 +119,7 @@ fn attach_address() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("address")
         .arg("attach")
-        .arg("--todolist_id=11b67ff3")
+        .arg("--todolist-id=11b67ff3")
         .arg("--address=afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca")
         .output()
         .unwrap();
@@ -183,7 +183,7 @@ fn allow_address() -> Result<(), Box<dyn std::error::Error>> {
         .arg("address")
         .arg("allow")
         .arg("--address=afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca")
-        .arg("--remote_address=qaq7l7f6uutpqohbhqjqlr7jwnhmbrm43nj4p2pbg2qzsfs5rkua")
+        .arg("--remote-address=qaq7l7f6uutpqohbhqjqlr7jwnhmbrm43nj4p2pbg2qzsfs5rkua")
         .output()
         .unwrap();
 
@@ -215,7 +215,7 @@ fn revoke_address() -> Result<(), Box<dyn std::error::Error>> {
         .arg("address")
         .arg("revoke")
         .arg("--address=afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca")
-        .arg("--remote_address=qaq7l7f6uutpqohbhqjqlr7jwnhmbrm43nj4p2pbg2qzsfs5rkua")
+        .arg("--remote-address=qaq7l7f6uutpqohbhqjqlr7jwnhmbrm43nj4p2pbg2qzsfs5rkua")
         .output()
         .unwrap();
 

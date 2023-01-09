@@ -13,7 +13,6 @@ pub fn cli() -> Command {
                         .about("Add new todolist")
                         .arg(
                             arg!(--name <name>)
-                                .short('n')
                                 .required(true)
                                 .help("todolist name (Required)")
                                 .require_equals(true)
@@ -25,7 +24,8 @@ pub fn cli() -> Command {
                     Command::new("delete")
                         .about("Delete a todolist")
                         .arg(
-                            arg!(--id <todolist_id>)
+                            arg!(--todolist_id <todolist_id>)
+                                .long("todolist-id")
                                 .required(true)
                                 .require_equals(true)
                                 .help("todolist id (Required)")
@@ -46,6 +46,7 @@ pub fn cli() -> Command {
                         .arg_required_else_help(true)
                         .arg(
                             arg!(--todolist_id <todolist_id>)
+                                .long("todolist-id")
                                 .required(true)
                                 .help("todolist id (Required)")
                                 .require_equals(true)
@@ -88,7 +89,8 @@ pub fn cli() -> Command {
                         .about("Delete a task")
                         .arg_required_else_help(true)
                         .arg(
-                            arg!(--id <task_id>)
+                            arg!(--task_id <task_id>)
+                                .long("task-id")
                                 .required(true)
                                 .help("task id (Required)")
                                 .require_equals(true)
@@ -100,7 +102,8 @@ pub fn cli() -> Command {
                         .about("Set a task as complete")
                         .arg_required_else_help(true)
                         .arg(
-                            arg!(--id <task_id>)
+                            arg!(--task_id <task_id>)
+                                .long("task-id")
                                 .required(true)
                                 .require_equals(true)
                                 .help("task id (Required)")
@@ -111,7 +114,12 @@ pub fn cli() -> Command {
                     Command::new("edit")
                         .about("Edit a task")
                         .arg_required_else_help(true)
-                        .arg(arg!(--id <task_id>).required(true).require_equals(true))
+                        .arg(
+                            arg!(--task_id <task_id>)
+                                .long("task-id")
+                                .required(true)
+                                .require_equals(true),
+                        )
                         .arg(arg!(--project <project>).require_equals(true))
                         .arg(arg!(--description <description>).require_equals(true)),
                 )
@@ -119,7 +127,12 @@ pub fn cli() -> Command {
                     Command::new("share")
                         .about("Share a task")
                         .arg_required_else_help(true)
-                        .arg(arg!(--id <task_id>).required(true).require_equals(true))
+                        .arg(
+                            arg!(--task_id <task_id>)
+                                .long("task-id")
+                                .required(true)
+                                .require_equals(true),
+                        )
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
@@ -132,7 +145,12 @@ pub fn cli() -> Command {
                     Command::new("unshare")
                         .about("Unshare a task")
                         .arg_required_else_help(true)
-                        .arg(arg!(--id <task_id>).required(true).require_equals(true))
+                        .arg(
+                            arg!(--task_id <task_id>)
+                                .long("task-id")
+                                .required(true)
+                                .require_equals(true),
+                        )
                         .arg(
                             arg!(--address <address>)
                                 .required(true)
@@ -174,6 +192,7 @@ pub fn cli() -> Command {
                         )
                         .arg(
                             arg!(--todolist_id <todolist_id>)
+                                .long("todolist-id")
                                 .required(true)
                                 .require_equals(true)
                                 .help("todolist id (Required)")
@@ -205,6 +224,7 @@ pub fn cli() -> Command {
                         )
                         .arg(
                             arg!(--remote_address <remote_address>)
+                                .long("remote-address")
                                 .required(true)
                                 .require_equals(true)
                                 .help("remote address (Required)")
@@ -224,6 +244,7 @@ pub fn cli() -> Command {
                         )
                         .arg(
                             arg!(--remote_address <remote_address>)
+                                .long("remote-address")
                                 .required(true)
                                 .require_equals(true)
                                 .help("remote address (Required)")

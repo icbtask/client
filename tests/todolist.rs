@@ -86,7 +86,7 @@ fn delete_todolist() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("todolist")
         .arg("delete")
-        .arg("--id=11b67ff3")
+        .arg("--todolist-id=11b67ff3")
         .output()
         .unwrap();
 

@@ -15,7 +15,7 @@ fn create_task() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("task")
         .arg("add")
-        .arg("--todolist_id=11b67ff3")
+        .arg("--todolist-id=11b67ff3")
         .arg("--project=Tools")
         .arg("--description=Build new todolist tool")
         .output()
@@ -100,7 +100,7 @@ fn delete_task() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("task")
         .arg("delete")
-        .arg("--id=11b67ff3")
+        .arg("--task-id=11b67ff3")
         .output()
         .unwrap();
 
@@ -128,7 +128,7 @@ fn complete_task() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("task")
         .arg("complete")
-        .arg("--id=11b67ff3")
+        .arg("--task-id=11b67ff3")
         .output()
         .unwrap();
 
@@ -159,7 +159,7 @@ fn share_task() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("task")
         .arg("share")
-        .arg("--id=11b67ff3")
+        .arg("--task-id=11b67ff3")
         .arg("--address=afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca")
         .output()
         .unwrap();
@@ -191,7 +191,7 @@ fn unshare_task() -> Result<(), Box<dyn std::error::Error>> {
         .env("BASE_URL", url)
         .arg("task")
         .arg("unshare")
-        .arg("--id=11b67ff3")
+        .arg("--task-id=11b67ff3")
         .arg("--address=afyp675e4wngq3qhiqyqqgeticgne4o2hxlsc3onztdhnbca")
         .output()
         .unwrap();
