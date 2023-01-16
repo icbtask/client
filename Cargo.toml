@@ -12,6 +12,7 @@ serde = { version = "1.0", features = ["derive"] }
 clap = { version = "4", features = ["derive", "cargo"] }
 envy = { version = "0.4" }
 tabled = { version = "0.10", features = ["color"] }
+openssl = { version = "0.10", features = ["vendored"] }
 
 [dev-dependencies]
 assert_cmd = "2.0.8"
