@@ -13,3 +13,6 @@ build:
 
 update:
     @cargo upgrade
+
+build-release-linux-x86_64-musl:
+    podman run --rm -v .:/home/rust/src messense/rust-musl-cross:x86_64-musl cargo build --release
