@@ -9,8 +9,8 @@ edition = "2021"
 reqwest = { version = "0.11", features = ["json"] }
 tokio = { version = "1", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
-clap = { version = "4", features = ["derive"] }
-envy = {version =  "0.4"}
+clap = { version = "4", features = ["derive", "cargo"] }
+envy = { version = "0.4" }
 tabled = { version = "0.10", features = ["color"] }
 
 [dev-dependencies]

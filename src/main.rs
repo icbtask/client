@@ -4,6 +4,7 @@ mod config;
 mod task;
 mod todolist;
 mod utils;
+use clap::crate_version;
 use std::collections::HashMap;
 use tabled::{builder::Builder, Alignment, Panel, Table, Tabled};
 
@@ -22,7 +23,7 @@ struct Address {
 
 #[tokio::main]
 async fn main() {
-    let matches = cli::cli().get_matches();
+    let matches = cli::cli().version(crate_version!()).get_matches();
     match matches.subcommand() {
         Some(("todolist", sub_matches)) => {
             let todolist_subcommand = sub_matches.subcommand().unwrap();
