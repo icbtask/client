@@ -68,17 +68,27 @@ async fn main() {
                 }
                 ("list", args) => {
                     let todolist_id = args.get_one::<String>("todolist_id");
-                    let tasks = task::get_tasks(todolist_id).await.unwrap();
                     let show_complete = args.get_one::<bool>("show_complete").unwrap();
 
+                    let tasks = task::get_tasks(todolist_id).await.unwrap();
+
+                    let show_shared = tasks
+                        .iter()
+                        .any(|t| t.shared_from.is_some() | !t.shared_with.is_empty());
+
                     let mut tables: HashMap<String, Builder> = HashMap::new();
-                    let mut columns = vec![
+                    let mut columns: Vec<String> = vec![
                         "id".to_string(),
                         "project".to_string(),
                         "description".to_string(),
-                        "shared from".to_string(),
-                        "shared with".to_string(),
                     ];
+
+                    if show_shared {
+                        columns.extend_from_slice(&[
+                            "shared from".to_string(),
+                            "shared with".to_string(),
+                        ]);
+                    }
 
                     if *show_complete {
                         columns.push("status".to_string());
@@ -86,20 +96,20 @@ async fn main() {
 
                     for t in tasks {
                         let todolist_name = t.todolist.name;
+                        let mut row: Vec<String> = vec![t.task_id, t.project, t.description];
 
-                        let mut row = vec![
-                            t.task_id,
-                            t.project,
-                            t.description,
-                            t.shared_from
-                                .map(|x| format!("@{}", x))
-                                .unwrap_or_else(String::new),
-                            t.shared_with
-                                .into_iter()
-                                .map(|v| format!("@{}", v))
-                                .collect::<Vec<String>>()
-                                .join(" "),
-                        ];
+                        if show_shared {
+                            row.extend_from_slice(&[
+                                t.shared_from
+                                    .map(|x| format!("@{}", x))
+                                    .unwrap_or_else(String::new),
+                                t.shared_with
+                                    .into_iter()
+                                    .map(|v| format!("@{}", v))
+                                    .collect::<Vec<String>>()
+                                    .join(" "),
+                            ]);
+                        }
 
                         if *show_complete {
                             row.push(t.status);

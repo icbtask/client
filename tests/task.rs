@@ -74,12 +74,67 @@ fn list_tasks() -> Result<(), Box<dyn std::error::Error>> {
     let output = String::from_utf8(cmd.stdout)?;
 
     let expected = "\
++----------+---------+-------------------------+
+|                 My Todolist                  |
++----------+---------+-------------------------+
+|    id    | project |       description       |
++----------+---------+-------------------------+
+| 12345678 |  Tools  | Build new todolist tool |
++----------+---------+-------------------------+
+";
+    assert_eq!(output, expected);
+
+    Ok(())
+}
+
+#[test]
+fn list_tasks_with_shared_ones() -> Result<(), Box<dyn std::error::Error>> {
+    let url = &mockito::server_url();
+    let _m = mock("GET", "/tasks")
+        .with_status(200)
+        .with_header("content-type", "application/json")
+        .with_body(
+            r#"
+    [
+        {
+            "created_at": "2022-01-03T10:00:00",
+            "description": "Build new todolist tool",
+            "project": "Tools",
+            "shared_from": "bob",
+            "shared_with": [],
+            "status": "created",
+            "task_id": "12345678",
+            "todolist": {
+                "created_at": "2022-01-03T10:00:00",
+                "todolist_id": "99999999",
+                "name": "My Todolist"
+            },
+            "updated_at": "2022-01-03T10:00:00"
+        }
+    ]
+            "#,
+        )
+        .create();
+
+    let cmd = Command::cargo_bin("icbtask")?
+        .env("API_KEY", "SECRETKEY")
+        .env("BASE_URL", url)
+        .arg("task")
+        .arg("list")
+        .output()
+        .unwrap();
+
+    assert!(cmd.status.success());
+
+    let output = String::from_utf8(cmd.stdout)?;
+
+    let expected = "\
 +----------+---------+-------------------------+-------------+-------------+
 |                               My Todolist                                |
 +----------+---------+-------------------------+-------------+-------------+
 |    id    | project |       description       | shared from | shared with |
 +----------+---------+-------------------------+-------------+-------------+
-| 12345678 |  Tools  | Build new todolist tool |             |             |
+| 12345678 |  Tools  | Build new todolist tool |    @bob     |             |
 +----------+---------+-------------------------+-------------+-------------+
 ";
     assert_eq!(output, expected);
