@@ -1,12 +1,12 @@
 ---
 name: Release
 on:
-  workflow_run:
-    workflows: [Test]
-    types:
-      - completed
+  push:
+    tags:
+      - "v*"
 jobs:
   build-linux:
+    needs: Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -30,19 +30,20 @@ jobs:
           ./target/x86_64-unknown-linux-musl/release/icbtask --version
           file ./target/x86_64-unknown-linux-musl/release/icbtask
 
-  # build-macos:
-  #   runs-on: macos-latest
-  #   steps:
-  #     - uses: actions/checkout@master
-  #     - uses: taiki-e/install-action@just
-  #     - name: Install Rust
-  #       uses: actions-rs/toolchain@v1
-  #       with:
-  #         toolchain: stable
-  #
-  #     - name: Build Release
-  #       run: just build-release
-  #
-  #     - name: Check binary
-  #       run: |
-  #         ./target/release/icbtask --version
+  build-macos:
+    needs: Test
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: taiki-e/install-action@just
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Build Release
+        run: just build-release
+
+      - name: Check binary
+        run: |
+          ./target/release/icbtask --version
