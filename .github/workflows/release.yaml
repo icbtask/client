@@ -18,7 +18,7 @@ jobs:
           target: x86_64-unknown-linux-musl
 
       - name: Setup MUSL
-        run: sudo apt update && sudo apt install -y musl-tools
+        run: sudo apt update && sudo apt install -y musl-tools libssl-dev
 
       - name: Build Release
         run: just build-release-linux
@@ -27,19 +27,19 @@ jobs:
         run: |
           ./target/x86_64-unknown-linux-musl/release/icbtask --version
 
-  build-macos:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: taiki-e/install-action@just
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-
-      - name: Build Release
-        run: just build-release
-
-      - name: Check binary
-        run: |
-          ./target/release/icbtask --version
+  # build-macos:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: actions/checkout@master
+  #     - uses: taiki-e/install-action@just
+  #     - name: Install Rust
+  #       uses: actions-rs/toolchain@v1
+  #       with:
+  #         toolchain: stable
+  #
+  #     - name: Build Release
+  #       run: just build-release
+  #
+  #     - name: Check binary
+  #       run: |
+  #         ./target/release/icbtask --version
