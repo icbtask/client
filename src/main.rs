@@ -4,9 +4,12 @@ mod config;
 mod task;
 mod todolist;
 mod utils;
-use clap::crate_version;
 use std::collections::HashMap;
 use tabled::{builder::Builder, Alignment, Panel, Table, Tabled};
+
+use clap::{crate_name, crate_version};
+use clap_complete::{generate, Shell};
+use std::io;
 
 #[derive(Tabled)]
 struct Todolist {
@@ -25,6 +28,10 @@ struct Address {
 async fn main() {
     let matches = cli::cli().version(crate_version!()).get_matches();
     match matches.subcommand() {
+        Some(("completion", args)) => {
+            let shell = args.get_one::<Shell>("shell").unwrap().to_owned();
+            generate(shell, &mut cli::cli(), crate_name!(), &mut io::stdout());
+        }
         Some(("todolist", sub_matches)) => {
             let todolist_subcommand = sub_matches.subcommand().unwrap();
             match todolist_subcommand {

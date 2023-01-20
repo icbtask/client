@@ -1,8 +1,20 @@
 use clap::{arg, builder, Command};
 
+use clap_complete::Shell;
+
 pub fn cli() -> Command {
     Command::new("icbtask")
         .subcommand_required(true)
+        .subcommand(
+            Command::new("completion")
+                .about("Output shell completion code for the specified shell")
+                .arg(
+                    arg!(<shell>)
+                        .required(true)
+                        .help("Shell name (Required)")
+                        .value_parser(clap::value_parser!(Shell)),
+                ),
+        )
         .subcommand(
             Command::new("todolist")
                 .about("Manage todolists")
