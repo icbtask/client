@@ -20,7 +20,7 @@ jobs:
       - name: Setup build env
         run: |
           sudo apt update
-          sudo apt install -y musl-tools libssl-dev make
+          sudo apt install -y musl-tools perl libssl-dev make
 
       - name: Build Release
         run: just build-release-linux
@@ -28,6 +28,7 @@ jobs:
       - name: Check binary
         run: |
           ./target/x86_64-unknown-linux-musl/release/icbtask --version
+          file ./target/x86_64-unknown-linux-musl/release/icbtask
 
   # build-macos:
   #   runs-on: macos-latest
