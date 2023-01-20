@@ -1,20 +1,40 @@
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 # ICBTask official cli
+
+## Table of Contents
+
+1. [Installation](#-installation)
+
+2. [Configuration](#-configuration)
+
+3. [Examples](#-examples)
 
 ## 🔌 Installation
 
 You can download the prebuilt binary for your platform in github releases page [here](https://github.com/icbtask/client/releases)
 
-## 🚀 Usage
-
-### Requirements
+## ⚙️ Configuration
 
 To be able to use the cli, you'll need an API Key
 
 ```
-export API_KEY=<Your API Key>
+$ export API_KEY=<Your API Key>
 ```
 
 You can generate one in your [profile](https://icbtask.com)
+
+💡 You can generate the completion for your shell with this command.
+
+```
+$ icbtask completion <shell>
+```
+
+Check the help to know more about the supported shell
+
+```
+$ icbtask completion --help
+```
 
 ### ⚽ Examples
 
@@ -136,7 +156,7 @@ $ icbtask task list
 
 ## ✍️ Author
 
-Badr BADRI @pythops
+Badr BADRI [@pythops](https://github.com/pythops)
 
 ## ⚖️ License
 
