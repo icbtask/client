@@ -18,3 +18,6 @@ clap_complete = "4.1.0"
 assert_cmd = "2.0.8"
 mockito = "0.31.1"
 pretty_assertions = "1.3.0"
+
+[build-dependencies]
+openssl = { version = "0.10", features = ["vendored"] }
