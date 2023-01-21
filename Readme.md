@@ -1,6 +1,10 @@
+<div align="center">
+<h2 align="center"> ICBTask official cli </h2>
+
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-# ICBTask official cli
+</div>
 
 ## Table of Contents
 
