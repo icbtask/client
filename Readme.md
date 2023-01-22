@@ -16,7 +16,21 @@
 
 ## 🔌 Installation
 
-You can download the prebuilt binary for your platform in github releases page [here](https://github.com/icbtask/client/releases)
+### Prebuilt binaries
+
+You can download the prebuilt binary for your platform in github [releases page](https://github.com/icbtask/client/releases)
+
+### Building with cargo
+
+You need to [Install Rust](https://www.rust-lang.org/learn/get-started) to be able to compile it.
+
+```
+$ git clone https://github.com/icbtask/client
+$ cd client
+$ cargo build --release
+$ ./target/release/icbtask --version
+icbtask 0.1.0
+```
 
 ## ⚙️ Configuration
 
