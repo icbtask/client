@@ -3,47 +3,57 @@ name: Release
 on:
   push:
     tags:
-      - "v*"
+      - "*"
 jobs:
-  build-linux:
-    needs: Test
-    runs-on: ubuntu-latest
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        rust: [stable]
+    permissions:
+      contents: write
+
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@master
-      - uses: taiki-e/install-action@just
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Install just
+        uses: taiki-e/install-action@just
+
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          target: x86_64-unknown-linux-musl
 
-      - name: Setup build env
+      - name: Setup build env for Linux
+        if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt update
           sudo apt install -y musl-tools perl libssl-dev make
+          rustup target add x86_64-unknown-linux-musl
 
-      - name: Build Release
-        run: just build-release-linux
-
-      - name: Check binary
+      - name: Build for Linux
+        if: matrix.os == 'ubuntu-latest'
         run: |
-          ./target/x86_64-unknown-linux-musl/release/icbtask --version
-          file ./target/x86_64-unknown-linux-musl/release/icbtask
+          just build-release-linux
+          cp target/x86_64-unknown-linux-musl/release/icbtask icbtask-x86_64-musl
 
-  build-macos:
-    needs: Test
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: taiki-e/install-action@just
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
+      - name: Build for macos
+        if: matrix.os == 'macos-latest'
+        run: |
+          just build-release-macos
+          cp target/x86_64-apple-darwin/release/icbtask icbtask-x86_64-macos
+
+      - name: Extract release notes
+        if: matrix.os == 'ubuntu-latest'
+        id: release_notes
+        uses: ffurrer2/extract-release-notes@v1
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          toolchain: stable
-
-      - name: Build Release
-        run: just build-release
-
-      - name: Check binary
-        run: |
-          ./target/release/icbtask --version
+          body: ${{ steps.release_notes.outputs.release_notes }}
+          files: "icbtask*"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
