@@ -8,13 +8,15 @@
 
 ## Table of Contents
 
-1. [Installation](#-installation)
+1. [Installation](#installation)
 
-2. [Configuration](#-configuration)
+2. [Configuration](#configuration)
 
-3. [Examples](#-examples)
+3. [Examples](#examples)
 
-## 🔌 Installation
+4. [Docs](#icbtask-documentation)
+
+## Installation
 
 ### Prebuilt binaries
 
@@ -32,7 +34,7 @@ $ ./target/release/icbtask --version
 icbtask 0.1.0
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 To be able to use the cli, you'll need an API Key
 
@@ -54,7 +56,7 @@ Check the help to know more about the supported shell
 $ icbtask completion --help
 ```
 
-### ⚽ Examples
+## Examples
 
 #### Create a todolist
 
@@ -171,6 +173,10 @@ $ icbtask task list
 | 97ea5748 |  Blog   | Create a new blog post |    @Badr    |             |
 +----------+---------+------------------------+-------------+-------------+
 ```
+
+## ICBTask documentation
+
+Checkout the ICBTask documentation here 👉 [Docs](https://github.com/icbtask/docs)
 
 ## ✍️ Author
 
