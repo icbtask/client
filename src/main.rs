@@ -38,7 +38,7 @@ async fn main() {
                 ("add", args) => {
                     let todolist_name = args.get_one::<String>("name").unwrap();
                     todolist::create_todolist(todolist_name).await.unwrap();
-                    println!("New todolist `{}` created", todolist_name);
+                    println!("New todolist `{todolist_name}` created");
                 }
                 ("delete", args) => {
                     let todolist_id = args.get_one::<String>("todolist_id").unwrap();
@@ -108,11 +108,11 @@ async fn main() {
                         if show_shared {
                             row.extend_from_slice(&[
                                 t.shared_from
-                                    .map(|x| format!("@{}", x))
+                                    .map(|x| format!("@{x}"))
                                     .unwrap_or_else(String::new),
                                 t.shared_with
                                     .into_iter()
-                                    .map(|v| format!("@{}", v))
+                                    .map(|v| format!("@{v}"))
                                     .collect::<Vec<String>>()
                                     .join(" "),
                             ]);
@@ -135,7 +135,7 @@ async fn main() {
                         table.set_columns(&columns);
                         let mut data = table.build();
                         data.with(Panel::header(todolist)).with(Alignment::center());
-                        println!("{}", data);
+                        println!("{data}");
                     }
                 }
                 ("delete", args) => {
