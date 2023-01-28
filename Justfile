@@ -11,6 +11,9 @@ lint:
 build:
     @cargo build
 
+build-release:
+    @cargo build --release
+
 update:
     @cargo upgrade
 
@@ -18,5 +21,5 @@ build-release-linux:
     @cargo build --release --target=x86_64-unknown-linux-musl
     @strip target/x86_64-unknown-linux-musl/release/icbtask
 
-build-release:
-    @cargo build --release
+build-release-macos:
+    @cargo build --release --target=x86_64-apple-darwin
