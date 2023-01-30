@@ -31,7 +31,7 @@ $ git clone https://github.com/icbtask/client
 $ cd client
 $ cargo build --release
 $ ./target/release/icbtask --version
-icbtask 0.1.0
+icbtask 0.2.0
 ```
 
 ## Configuration
