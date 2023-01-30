@@ -1,5 +1,10 @@
 ---
-on: [push]
+on:
+  push:
+    branches:
+      - "*"
+    tags:
+      - "!*"
 name: Test
 jobs:
   test:
